@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Task_Management.Data;
 
 namespace Task_Management.Repository;
@@ -15,6 +16,7 @@ public class Repository<T>:IRepository<T>
 
     public Repository(ApplicationDbContext context)
     {
+        this.context = context;
         _dbSet = context.Set<T>();
     }
     
@@ -53,22 +55,29 @@ public class Repository<T>:IRepository<T>
     public async Task<T> GetByIdAsync(int id, QueryOptions<T> options)
     {
         IQueryable<T> query = ApplyQueryOptions(options);
-        var key = context.Model.FindEntityType(typeof(T))?.FindPrimaryKey();
-        string primaryKey = key?.ToString() ?? "";
-        return await query.FirstOrDefaultAsync(e => EF.Property<string>(e, "Id") == primaryKey);
+        var entityType = context.Model.FindEntityType(typeof(T));
+        var primaryKey = entityType?.FindPrimaryKey()?.Properties.FirstOrDefault()?.Name;
+
+        if (string.IsNullOrEmpty(primaryKey))
+        {
+            throw new InvalidOperationException($"Primary key not found for entity {typeof(T).Name}");
+        }
+        return await query.FirstOrDefaultAsync(e => EF.Property<int>(e,primaryKey) == id); 
     }
     
     // Add new task into database
-    public async Task AddAsync(T entity)
+    public async Task<T> AddAsync(T entity)
     {
+        
         await _dbSet.AddAsync(entity);
         await context.SaveChangesAsync();
+        return entity;
     }
     
     //Update a Task in the Database
     public async Task UpdateAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
+        _dbSet.Entry(entity).State = EntityState.Modified;
         await context.SaveChangesAsync();
     }
     

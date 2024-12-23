@@ -1,6 +1,9 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using MySqlConnector;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using Task_Management.Data;
 using Task_Management.Repository;
 
@@ -20,7 +23,6 @@ builder.Services.AddSwaggerGen(s =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     s.IncludeXmlComments(xmlPath);
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
