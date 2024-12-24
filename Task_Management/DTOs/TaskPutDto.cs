@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Task_Management.Enums;
-
-namespace Task_Management.DTOs;
 using Task = Task_Management.Models.Task;
+namespace Task_Management.DTOs;
 
-public class TaskPostDto
+public class TaskPutDto
 {
+    [Required]
+    public int Id { get; set; }
     /// <summary>
     /// <example>The Article Number 1</example>
     /// </summary>
@@ -30,11 +30,11 @@ public class TaskPostDto
     /// <summary>
     /// <example>High</example>
     /// </summary>
-    [JsonConverter(typeof(JsonStringEnumConverter))]  
+    [JsonConverter(typeof(JsonStringEnumConverter))] 
     public PriorityEnum Priority { get; set; } 
 
 
-    public Task MapTaskPostDtoToTask()
+    public Task MapTaskPutDtoToTask()
     {
         return new Task()
         {
@@ -46,4 +46,3 @@ public class TaskPostDto
         };
     }
 }
-
