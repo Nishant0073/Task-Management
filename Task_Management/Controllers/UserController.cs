@@ -18,4 +18,12 @@ public class UserController(IUserService userService) : Controller
         var result = await _userService.RegisterAsync(model);
         return Ok(result);
     }
+
+    [HttpPost("Token")]
+    public async Task<ActionResult> GetTokenAsync(TokenRequestModel model)
+    {
+        var result = await _userService.GetTokenAsync(model);
+        return Ok(result);
+    }
 }
+
