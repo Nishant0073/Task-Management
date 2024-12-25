@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Task_Management.Data;
@@ -6,6 +7,7 @@ using Task_Management.Repository;
 using Task = Task_Management.Models.Task;
 
 namespace Task_Management.Controllers;
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class TaskController(ApplicationDbContext context) : ControllerBase
