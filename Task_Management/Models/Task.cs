@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Task_Management.Enums;
 
@@ -7,6 +8,7 @@ namespace Task_Management.Models;
 public class Task
 {
     [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
     public string Title { get; set; }

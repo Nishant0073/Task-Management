@@ -4,22 +4,27 @@ using Task_Management.Enums;
 using Task = Task_Management.Models.Task;
 namespace Task_Management.DTOs;
 
-public class TaskPutDto
+public class TaskResponseDto
 {
-    /// <summary>
-    /// Task id
-    /// <example>1</example>
-    /// </summary>
+    public TaskResponseDto(Task task)
+    {
+        this.Id = task.Id;
+        this.Title = task.Title;
+        this.Description = task.Description;
+        this.DueDate = task.DueDate;
+        this.IsComplete = task.IsComplete;
+        this.Priority = task.Priority;
+    }
     [Required]
     public int Id { get; set; }
     /// <summary>
-    /// <example>Learn dijkstra algorithm</example>
+    /// <example>The Task Number 1</example>
     /// </summary>
     [Required]
     public string Title { get; set; }
 
     /// <summary>
-    /// <example>Lear from gfg and salve examples from leetcode.</example>
+    /// <example>The description of task number 1</example>
     /// </summary>
     public string Description { get; set; } = "";
     /// <summary>
@@ -35,19 +40,6 @@ public class TaskPutDto
     /// <example>High</example>
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))] 
-    public PriorityEnum Priority { get; set; } 
+    public PriorityEnum Priority { get; set; }
 
-
-    public Task MapTaskPutDtoToTask()
-    {
-        return new Task()
-        {
-            Id = Id,
-            Title = this.Title,
-            Description = this.Description,
-            DueDate = this.DueDate,
-            IsComplete = this.IsComplete,
-            Priority = this.Priority
-        };
-    }
 }

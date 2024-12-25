@@ -9,13 +9,13 @@ using Task = Task_Management.Models.Task;
 public class TaskPostDto
 {
     /// <summary>
-    /// <example>The Article Number 1</example>
+    /// <example>Learn dijkstra algorithm</example>
     /// </summary>
     [Required]
     public string Title { get; set; }
 
     /// <summary>
-    /// <example>The description of article number 1</example>
+    /// <example>Lear from gfg and salve examples from leetcode.</example>
     /// </summary>
     public string Description { get; set; } = "";
     /// <summary>
@@ -30,7 +30,7 @@ public class TaskPostDto
     /// <summary>
     /// <example>High</example>
     /// </summary>
-    [JsonConverter(typeof(JsonStringEnumConverter))]  
+    [JsonConverter(typeof(JsonStringEnumConverter))] 
     public PriorityEnum Priority { get; set; } 
 
 

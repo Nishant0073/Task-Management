@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Task_Management.Data;
 using Task_Management.DTOs;
@@ -16,9 +17,10 @@ public class TaskController(ApplicationDbContext context) : ControllerBase
     /// </summary>
     /// <returns>An enumerable collection of tasks.</returns>
     [HttpGet]
-    public async Task<IEnumerable<Task>> GetTasks()
+    public async Task<List<TaskResponseDto>> GetTasks()
     {
-        return await Repository.GetAllAsync();
+        IEnumerable<Task> tasks = await Repository.GetAllAsync();
+        return tasks.Select(task => new TaskResponseDto(task)).ToList();
     }
     
     /// <summary>
@@ -27,10 +29,17 @@ public class TaskController(ApplicationDbContext context) : ControllerBase
     /// <param name="id"></param>
     /// <returns>Task</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Task>> GetTask(int id)
+    public async Task<ActionResult<TaskResponseDto>> GetTask(int id)
     {
         Task task = await Repository.GetByIdAsync(id, new QueryOptions<Task>());
-        return task!=null ? Ok(task) : NotFound();
+        if (task is not null)
+        {
+           return Ok(new TaskResponseDto(task));
+        }
+        else
+        {
+            return NotFound();
+        }
     }
     
     /// <summary>
@@ -52,19 +61,19 @@ public class TaskController(ApplicationDbContext context) : ControllerBase
     /// <param name="id"></param>
     /// </summary> 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Task>> DeleteTask(int id)
+    public async Task<ActionResult<string>> DeleteTask(int id)
     {
         await Repository.DeleteAsync(id);
         return StatusCode(200, $"Task successfully deleted with Id: {id}");
     }
 
     [HttpPut]
-    public async Task<ActionResult<Task>> UpdateTask([FromQuery] TaskPutDto task)
+    public async Task<ActionResult<TaskResponseDto>> UpdateTask([FromQuery] TaskPutDto task)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        Task updateTask = await Repository.AddAsync(task.MapTaskPutDtoToTask() );
-        await Repository.UpdateAsync(updateTask);
-        return StatusCode(200, task);
+        Task updateTask = await Repository.UpdateAsync(task.MapTaskPutDtoToTask());
+        TaskResponseDto taskResponseDto = new(updateTask);
+        return StatusCode(200,taskResponseDto);
     }
 }

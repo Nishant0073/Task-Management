@@ -75,10 +75,11 @@ public class Repository<T>:IRepository<T>
     }
     
     //Update a Task in the Database
-    public async Task UpdateAsync(T entity)
+    public async Task<T> UpdateAsync(T entity)
     {
         _dbSet.Entry(entity).State = EntityState.Modified;
         await context.SaveChangesAsync();
+        return entity;
     }
     
     //Delete a task with the given id
