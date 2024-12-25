@@ -1,4 +1,4 @@
-namespace Task_Management.Data.Constants;
+namespace Task_Management.Constants;
 
 public class Authorization
 {
@@ -10,5 +10,5 @@ public class Authorization
     public const string default_username = "user";
     public const string default_email = "user@taskmanagement.com";
     public const string default_password = "password";
-    public const Roles default_role = Roles. User;
+    public const Roles  default_role = Roles. User;
 }

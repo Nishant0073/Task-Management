@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Task_Management.Data.Constants;
+using Task_Management.Constants;
 using Task_Management.Models;
 using Task = System.Threading.Tasks.Task;
 
