@@ -19,5 +19,9 @@ public class Task
     
     [JsonConverter(typeof(JsonStringEnumConverter))] 
     public PriorityEnum Priority { get; set; }
-    public int UserId { get; set; }
+    
+    [ForeignKey("UserId")] 
+    public virtual ApplicationUser User { get; set; } 
+
+    public string UserId { get; set; }
 }

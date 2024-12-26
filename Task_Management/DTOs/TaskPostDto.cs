@@ -34,7 +34,7 @@ public class TaskPostDto
     public PriorityEnum Priority { get; set; } 
 
 
-    public Task MapTaskPostDtoToTask()
+    public Task MapTaskPostDtoToTask(string UserId)
     {
         return new Task()
         {
@@ -42,7 +42,8 @@ public class TaskPostDto
             Description = this.Description,
             DueDate = this.DueDate,
             IsComplete = this.IsComplete,
-            Priority = this.Priority
+            Priority = this.Priority,
+            UserId = UserId,
         };
     }
 }

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Task_Management.Data;
 using Task_Management.DTOs;
+using Task_Management.Models;
 using Task_Management.Repository;
 using Task = Task_Management.Models.Task;
 
@@ -9,9 +11,15 @@ namespace Task_Management.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class TaskController(ApplicationDbContext context) : ControllerBase
+public class TaskController: ControllerBase
 {
-    private Repository<Task> Repository { get; set; } = new(context);
+    private IRepository Repository { get; set; }
+    private UserManager<ApplicationUser> UserManager { get; set; }
+    public TaskController(IHttpContextAccessor hcontext,ApplicationDbContext context,UserManager<ApplicationUser> userManager) 
+    { 
+        Repository = new Repository.Repository(context,hcontext.HttpContext.User);
+       UserManager = userManager;
+    }
 
     /// <summary>
     /// Fetch all the tasks.
@@ -53,7 +61,8 @@ public class TaskController(ApplicationDbContext context) : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        Task newTask = await Repository.AddAsync(task.MapTaskPostDtoToTask());
+        string UsedId= User.Claims.First(c => c.Type == "uid").Value;
+        Task newTask = await Repository.AddAsync(task.MapTaskPostDtoToTask(UsedId));
         return CreatedAtAction(nameof(GetTask), new { id = newTask.Id }, newTask);
     }
 
@@ -64,8 +73,8 @@ public class TaskController(ApplicationDbContext context) : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<string>> DeleteTask(int id)
     {
-        await Repository.DeleteAsync(id);
-        return StatusCode(200, $"Task successfully deleted with Id: {id}");
+        string response = await Repository.DeleteAsync(id);
+        return StatusCode(200, response);
     }
 
     [HttpPut]
@@ -74,6 +83,8 @@ public class TaskController(ApplicationDbContext context) : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         Task updateTask = await Repository.UpdateAsync(task.MapTaskPutDtoToTask());
+        if(updateTask==null)
+                return BadRequest();
         TaskResponseDto taskResponseDto = new(updateTask);
         return StatusCode(200,taskResponseDto);
     }
