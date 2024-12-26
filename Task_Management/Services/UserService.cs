@@ -74,6 +74,25 @@ public class UserService : IUserService
         return authenticationModel;
     }
 
+    public async Task<string> AddRoleAsync(AddRoleModel model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if(user == null)
+            return $"No account registered with {model.Email} email";
+        if (await _userManager.CheckPasswordAsync(user, model.Password))
+        {
+            var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
+            if (roleExists)
+            {
+                var role = Enum.GetValues(typeof(Authorization.Roles)).Cast<Authorization.Roles>().FirstOrDefault(x => x.Equals(model.Role));
+                await  _userManager.AddToRoleAsync(user, role.ToString());
+                return $"Role {role.ToString()} has been added to {model.Role.ToString()}";
+            }
+            return $"Role {model.Role.ToString()} does not exist";
+        }
+        return $"Incorrect credentials for user {model.Email}";
+    }
+
     private async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
     {
         var userClaims = await _userManager.GetClaimsAsync(user);
