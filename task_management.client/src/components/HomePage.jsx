@@ -1,21 +1,34 @@
 import React from "react";
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from "reactstrap";
 import * as Data from '../sampleData'
+import EditTaskPage from "./EditTaskPage";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+    const navigate = useNavigate();
+
+    const handleEditTask = (task) => {
+        navigate('/edittask',{state: {task}})
+    }
+
+
     const taskStyle = (task) => {
         return (Date(task.dueDate) < Date.now && !task.isComplete) ? { color: "red" } : task.isComplete ? { color: "green" } : { color: "" };
 
     }
+
     return (
         <div className="responsive-div">
-            <h1 style={{ textAlign: "center" }}>Tasks List</h1>
+            <h1 style={{ textAlign: "center", padding: "30px" }}>Tasks List</h1>
             <ListGroup flush>
                 {
                     Data.taskList.map(task => {
                         return <ListGroupItem
-                            href="#"
                             tag="a"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleEditTask(task);
+                            }}
                         >
                             <ListGroupItemHeading style={taskStyle(task)}>{task.title}</ListGroupItemHeading>
                             <ListGroupItemText style={{ display: "flex", justifyContent: "space-between" }}>
@@ -27,6 +40,8 @@ const HomePage = () => {
                 }
             </ListGroup>
         </div>);
+
+    
 }
 
 
