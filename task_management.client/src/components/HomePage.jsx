@@ -8,13 +8,13 @@ const HomePage = () => {
     const navigate = useNavigate();
 
     const handleEditTask = (task) => {
+        //const task = { id: 1, title: 'Sample Task', description: 'Task Description' }; 
         navigate('/edittask',{state: {task}})
     }
 
 
     const taskStyle = (task) => {
         return (Date(task.dueDate) < Date.now && !task.isComplete) ? { color: "red" } : task.isComplete ? { color: "green" } : { color: "" };
-
     }
 
     return (
