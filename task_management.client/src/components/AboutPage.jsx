@@ -1,4 +1,3 @@
-import { Container, Row, Col } from "reactstrap"
 
 const AboutPage = () => {
     return <div className="flex-div">
