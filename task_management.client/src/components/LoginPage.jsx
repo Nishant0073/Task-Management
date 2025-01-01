@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Form, FormGroup, Label, Input, Button, Row, Col, InputGroup, InputGroupText } from 'reactstrap';
+import { Container, Form, FormGroup, Input, Button, Row, Col, InputGroup, InputGroupText } from 'reactstrap';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
