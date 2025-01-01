@@ -7,8 +7,13 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const LoginPage = () => {
 
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+
     const [isPasswordVisibile, setIsPasswordVisible] = useState(false);
 
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+    }
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     }
@@ -31,14 +36,14 @@ const LoginPage = () => {
                                     <InputGroupText>
                                         @
                                     </InputGroupText>
-                                    <Input placeholder="username" />
+                                    <Input placeholder="username" onChange={handlePasswordChange} />
                                 </InputGroup>
                                 <br />
                                 <InputGroup style={{ display: "flex", justifyContent: "space-between" }}>
                                     <InputGroupText>
                                         @
                                     </InputGroupText>
-                                    <Input placeholder="password" />
+                                    <Input placeholder="password" onChange={handlePasswordChange} />
                                     <InputGroupText>
                                         <Button onClick={handleIsPasswordVisible} style={{
                                             padding: 0,
