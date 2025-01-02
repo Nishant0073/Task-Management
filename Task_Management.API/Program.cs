@@ -15,6 +15,16 @@ using Task_Management.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+//enabling CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173/");
+        });
+});
 // Database configuration
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -84,6 +94,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
