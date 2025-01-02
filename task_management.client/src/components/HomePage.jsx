@@ -23,7 +23,7 @@ const HomePage = () => {
             <ListGroup flush>
                 {
                     Data.taskList.map(task => {
-                        return <ListGroupItem
+                        return <ListGroupItem key={task.id}
                             tag="a"
                             onClick={(e) => {
                                 e.preventDefault();
