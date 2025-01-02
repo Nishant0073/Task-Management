@@ -23,10 +23,8 @@ const LoginPage = () => {
     }
 
     return (
-        <Container style={{ height: '100vh' }} className="d-flex align-items-center justify-content-center">
-            <Row className="w-100">
-                <Col className="d-flex justify-content-center align-items-center">
-                    <div className="login_responsive-div" style={{ textAlign: "center" }}>
+        <div className="responsive-div">
+            <br />
                         <h2>Login to your account..</h2>
                         <br />
                         <br />
@@ -36,7 +34,7 @@ const LoginPage = () => {
                                     <InputGroupText>
                                         @
                                     </InputGroupText>
-                                    <Input placeholder="username" onChange={handlePasswordChange} />
+                                    <Input placeholder="username" onChange={handleUsernameChange} />
                                 </InputGroup>
                                 <br />
                                 <InputGroup style={{ display: "flex", justifyContent: "space-between" }}>
@@ -61,9 +59,7 @@ const LoginPage = () => {
                             <Button color="primary">Submit</Button>
                         </Form>
                     </div>
-                </Col>
-            </Row>
-        </Container>
+            
     );
 }
 
