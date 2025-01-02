@@ -1,31 +1,31 @@
 .responsive-div {
-  width: 90%;
-  /* Default: for screens smaller than 768px */
+  width: 70%;
+  text-align: center;
   margin: 0 auto;
+
+  /* Flexbox for vertical centering */
+  justify-content: center; /* Horizontal centering */
+  align-items: center; /* Vertical centering */
+
+  /* Ensure parent container has height set */
+  height: 80vh; /* Full viewport height */
 }
 
-@media (min-width: 768px) {
+@media (min-width: 826px) {
   .responsive-div {
-    width: 50%;
-    /* Half the width for medium screens and larger */
-  }
-}
-
-
-.login-responsive-div {
-  width: 90%;
-  /* Default: for screens smaller than 768px */
-  margin: 0 auto;
-}
-
-@media (min-width: 768px) {
-  .login_responsive-div {
+    align-content: center;
+    align-items: center;
     width: 30%;
+    text-align: center;
+    
     /* Half the width for medium screens and larger */
   }
 }
 
-.intro-div{
+
+
+
+.center-div{
  height: 80vh;
  align-content: center;
  text-align: center;
