@@ -16,14 +16,13 @@ using Task_Management.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 
-//enabling CORS
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5173/");
-        });
+    options.AddPolicy("AllowMyApp",
+        builder => builder.WithOrigins("http://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 // Database configuration
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException();
@@ -95,6 +94,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseCors();
+// Use CORS
+app.UseCors("AllowMyApp");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
