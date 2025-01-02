@@ -33,6 +33,11 @@ const NavigationBar = () => {
             <NavLink href="/about">About</NavLink>
           </NavItem>
         </Nav>
+        <Nav navbar>
+        <NavItem>
+            <NavLink onClick={(e) => {alert("Logout!!")}}>Logout</NavLink>
+          </NavItem>
+        </Nav>
       </Collapse>
     </Navbar>
   );
