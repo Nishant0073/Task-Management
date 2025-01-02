@@ -1,7 +1,7 @@
 
 const AboutPage = () => {
-    return <div className="flex-div">
-        <div className="intro-div">
+    return <div >
+        <div className="center-div">
             <h3 >About Task Management</h3>
             <br />
             <p>Manage your all work with <i>Task Management</i></p>
