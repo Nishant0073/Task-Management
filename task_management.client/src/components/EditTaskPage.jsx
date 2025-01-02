@@ -16,7 +16,7 @@ const EditTaskPage = () => {
 
 
     return (
-        <div className="responsive-div">
+        <div className="responsive-home-div">
             <h1 style={{ textAlign: "center", padding: "30px" }}>Task {task.title}</h1>
             <Form>
                 <FormGroup>

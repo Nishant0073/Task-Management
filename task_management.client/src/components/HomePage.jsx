@@ -18,7 +18,7 @@ const HomePage = () => {
     }
 
     return (
-        <div className="responsive-div">
+        <div className="responsive-home-div">
             <h1 style={{ textAlign: "center", padding: "30px" }}>Tasks List</h1>
             <ListGroup flush>
                 {
