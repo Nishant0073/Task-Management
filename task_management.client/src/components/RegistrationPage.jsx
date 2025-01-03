@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Container, Form, FormGroup, Input, Button, Row, Col, InputGroup, InputGroupText } from 'reactstrap';
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaEdit, FaUserCircle } from "react-icons/fa";
 import { registerUser, loginUser } from '../services/authService'
-import { use } from "react";
 
 
 const RegistrationPage = () => {
@@ -15,6 +14,14 @@ const RegistrationPage = () => {
         Password: '',
     });
 
+    const [errors, setErrors] = useState({
+        FirstName: '',
+        LastName: '',
+        UserName: '',
+        Email: '',
+        Password: '',
+    })
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,6 +29,34 @@ const RegistrationPage = () => {
             ...prevState,
             [name]: value,
         }));
+    }
+
+    const validate = () => {
+        let isValid = true;
+        let newErrors = {};
+
+        if (!user.FirstName) {
+            isValid = false;
+            newErrors.FirstName = 'First Name is Required';
+        }
+
+        if (!user.LastName) {
+            isValid = false;
+            newErrors.LastName = 'Last Name is required';
+        }
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!user.Email || !emailPattern.test(user.Email)) {
+            isValid = false;
+            newErrors.Email = 'Invalid email address';
+        }
+
+        if (!user.Password || user.Password.length < 6) {
+            isValid = false;
+            newErrors.Password = 'Password must be at least 6 characters long';
+        }
+
+        setErrors(newErrors);
+        return isValid;
     }
 
 
@@ -33,12 +68,15 @@ const RegistrationPage = () => {
 
     const handleSumit = async (e) => {
         e.preventDefault();
-        try {
-            await registerUser(user);
-        } catch (error) {
-            alert('Registration failed!');
+        if (validate()) {
+            try {
+                await registerUser(user);
+            } catch (error) {
+                alert('Registration failed!');
+            }
         }
     }
+
 
 
 
@@ -56,6 +94,9 @@ const RegistrationPage = () => {
                         </InputGroupText>
                         <Input placeholder="Shyam" name="FirstName" onChange={handleChange} type="text" value={user.FirstName} />
                     </InputGroup>
+                    <span className="error-class">
+                        {errors.FirstName}
+                    </span>
                     <br />
                     <InputGroup>
                         <InputGroupText>
@@ -63,6 +104,9 @@ const RegistrationPage = () => {
                         </InputGroupText>
                         <Input placeholder="Yadav" name="LastName" onChange={handleChange} type="text" value={user.LastName} />
                     </InputGroup>
+                    <span className="error-class">
+                        {errors.LastName}
+                    </span>
                     <br />
                     <InputGroup>
                         <InputGroupText>
@@ -77,6 +121,9 @@ const RegistrationPage = () => {
                         </InputGroupText>
                         <Input placeholder="email" name="Email" onChange={handleChange} type="email" value={user.Email} />
                     </InputGroup>
+                    <span className="error-class">
+                        {errors.Email}
+                    </span>
                     <br />
                     <InputGroup style={{ display: "flex", justifyContent: "space-between" }}>
                         <InputGroupText>
@@ -96,6 +143,9 @@ const RegistrationPage = () => {
                             </Button>
                         </InputGroupText>
                     </InputGroup>
+                    <span className="error-class">
+                        {errors.Password}
+                    </span>
                 </FormGroup>
                 <Button type="submit">Submit</Button>
             </Form>
