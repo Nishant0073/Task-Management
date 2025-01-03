@@ -23,8 +23,9 @@ public class UserService : IUserService
         _roleManager = roleManager;
     }
 
-    public async Task<string> RegisterAsync(RegisterModel registerModel)
+    public async Task<RegisterResponse> RegisterAsync(RegisterModel registerModel)
     {
+        RegisterResponse registerResponse = new RegisterResponse();
         var user = new ApplicationUser
         {
             Email = registerModel.Email,
@@ -41,10 +42,16 @@ public class UserService : IUserService
             {
                 await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
             }
-
-            return $"User with email {registerModel.Email} has been registered";
+            
+            registerResponse.message = $"User with email {registerModel.Email} has been registered";
+            registerResponse.errorCode = 00;
+            
+            return registerResponse;
         }
-        return $"User with email {registerModel.Email} is already registered";
+
+        registerResponse.message =  $"User with email {registerModel.Email} is already registered";
+        registerResponse.errorCode = 01;
+        return registerResponse;
     }
 
     public async Task<AuthenticationModel> GetTokenAsync(TokenRequestModel requestModel)

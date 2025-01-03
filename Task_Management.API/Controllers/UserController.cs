@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Task_Management.Models;
 using Task_Management.Services;
@@ -15,8 +17,10 @@ public class UserController(IUserService userService) : Controller
     public async Task<ActionResult> RegisterAsync(RegisterModel model)
     {
 
-        var result = await _userService.RegisterAsync(model);
-        return Ok(result);
+        RegisterResponse result = await _userService.RegisterAsync(model);
+        var res  = JsonSerializer.Serialize(result,new JsonSerializerOptions{IncludeFields = true});
+        Console.WriteLine(res);
+        return Ok(res);
     }
 
     [HttpPost("Token")]
