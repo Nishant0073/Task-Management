@@ -3,10 +3,10 @@
   text-align: center;
   margin: 0 auto;
 
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
 
-  height: 80vh; 
+  height: 80vh;
 }
 
 @media (min-width: 826px) {
@@ -23,10 +23,10 @@
 .responsive-home-div {
   width: 80%;
   margin: 0 auto;
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
 
-  height: 80vh; 
+  height: 80vh;
 }
 
 @media (min-width: 826px) {
@@ -41,14 +41,22 @@
 
 
 
-.center-div{
- height: 80vh;
- align-content: center;
- text-align: center;
+.center-div {
+  height: 80vh;
+  align-content: center;
+  text-align: center;
 }
 
-.end-div{
+.end-div {
   height: 10vh;
-  align-content:end ;
+  align-content: end;
   text-align: center;
+}
+
+.error-class {
+  color: red;
+  text-align: left;
+  display:block;
+  margin-left: 0%;
+  font-size: 15px;
 }
