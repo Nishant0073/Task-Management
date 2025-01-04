@@ -8,12 +8,12 @@ import {
   NavItem,
   NavLink,
 } from 'reactstrap';
-
+import { useAuth } from '../Helper/AuthProvider';
 import  * as Constants from '../constants';
 
 const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const {logout} = useAuth();
   const toggleNavbar = () => setIsOpen(!isOpen);
 
   return (
@@ -37,7 +37,7 @@ const NavigationBar = () => {
         </Nav>
         <Nav navbar>
         <NavItem>
-            <NavLink onClick={(e) => {alert("Logout!!")}}>Logout</NavLink>
+            <NavLink onClick={(e) => {logout()}}>Logout</NavLink>
           </NavItem>
         </Nav>
       </Collapse>

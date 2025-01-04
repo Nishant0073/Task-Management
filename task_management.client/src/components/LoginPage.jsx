@@ -4,12 +4,15 @@ import { FaEye, FaEyeSlash, FaLock, FaEnvelope } from "react-icons/fa";
 import { loginUser } from "../services/authService";
 import { useToast } from "../Helper/ToastProvider";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Helper/AuthProvider";
+
 
 
 
 const LoginPage = () => {
     const notify = useToast();
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [credentials, setCredentials] = useState({
         'Email': '',
         'Password': '',
@@ -53,8 +56,9 @@ const LoginPage = () => {
             try {
                 const tokenData = await loginUser(credentials);
                 localStorage.setItem('jwt_token', tokenData);
-                if (result.isAuthenticated) {
-                    navigate('/home');
+                if (tokenData.isAuthenticated==true) {
+                    login(tokenData.token);
+                    navigate('/');
                 }
                 else {
                     notify("Invalid Username or Password");
