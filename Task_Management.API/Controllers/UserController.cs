@@ -27,6 +27,7 @@ public class UserController(IUserService userService) : Controller
     public async Task<ActionResult> GetTokenAsync(TokenRequestModel model)
     {
         var result = await _userService.GetTokenAsync(model);
+        var res  = JsonSerializer.Serialize(result,new JsonSerializerOptions{IncludeFields = true});
         return Ok(result);
     }
     
