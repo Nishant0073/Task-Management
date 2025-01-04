@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { Container, Form, FormGroup, Input, Button, Row, Col, InputGroup, InputGroupText } from 'reactstrap';
 import { FaEye, FaEyeSlash, FaLock, FaEnvelope } from "react-icons/fa";
 import { loginUser } from "../services/authService";
+import { useToast } from "../Helper/ToastProvider";
+import { useNavigate } from "react-router-dom";
 
 
 
 const LoginPage = () => {
+    const notify = useToast();
+    const navigate = useNavigate();
     const [credentials, setCredentials] = useState({
         'Email': '',
         'Password': '',
@@ -49,9 +53,14 @@ const LoginPage = () => {
             try {
                 const tokenData = await loginUser(credentials);
                 localStorage.setItem('jwt_token', tokenData);
-                alert("Login successful");
+                if (result.isAuthenticated) {
+                    navigate('/home');
+                }
+                else {
+                    notify("Invalid Username or Password");
+                }
             } catch (error) {
-                alert("Login failed");
+                notify("Invalid Username or Password");
             }
         }
     }

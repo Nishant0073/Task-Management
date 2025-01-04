@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { Container, Form, FormGroup, Input, Button, Row, Col, InputGroup, InputGroupText } from 'reactstrap';
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaEdit, FaUserCircle } from "react-icons/fa";
 import { registerUser, loginUser } from '../services/authService'
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../Helper/ToastProvider.jsx";
 
 
 const RegistrationPage = () => {
+
+    const navigate = useNavigate();
+    const notify = useToast();
 
     const [user, setUser] = useState({
         FirstName: '',
@@ -70,9 +75,13 @@ const RegistrationPage = () => {
         e.preventDefault();
         if (validate()) {
             try {
-                await registerUser(user);
+                var result = await registerUser(user);
+                notify(result.message);
+                if (result.errorCode == 0) {
+                    navigate('/login');
+                }
             } catch (error) {
-                alert('Registration failed!');
+                notify('Registration Failed!');
             }
         }
     }
@@ -129,7 +138,7 @@ const RegistrationPage = () => {
                         <InputGroupText>
                             <FaLock />
                         </InputGroupText>
-                        <Input placeholder="password" name="Password" onChange={handleChange} type={isPasswordVisibile ? "text" : "password"} valid={user.Password} />
+                        <Input placeholder="password" name="Password" onChange={handleChange} type={isPasswordVisibile ? "text" : "password"} value={user.Password} />
                         <InputGroupText>
                             <Button onClick={handleIsPasswordVisible} style={{
                                 padding: 0,

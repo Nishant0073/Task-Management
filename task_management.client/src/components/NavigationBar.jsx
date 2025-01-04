@@ -25,7 +25,6 @@ const NavigationBar = () => {
           <NavItem>
             <NavLink href="/">Home</NavLink>
           </NavItem>
-          
           <NavItem>
             <NavLink href="/login">Login</NavLink>
           </NavItem>
