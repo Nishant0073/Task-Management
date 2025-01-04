@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, FormGroup, Input, Button, Row, Col, InputGroup, InputGroupText } from 'reactstrap';
-import { FaEye, FaEyeSlash,FaLock, FaEnvelope } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaLock, FaEnvelope } from "react-icons/fa";
 import { loginUser } from "../services/authService";
 
 
@@ -11,27 +11,52 @@ const LoginPage = () => {
         'Password': '',
     });
 
+    const [errors, setErrors] = useState({
+        Email: '',
+        Password: '',
+    });
+
+    const validate = () => {
+        let isValid = true;
+        let newErrors = {};
+
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!credentials.Email || !emailPattern.test(credentials.Email)) {
+            isValid = false;
+            newErrors.Email = 'Invalid email address';
+        }
+
+        if (!credentials.Password || credentials.Password.length < 6) {
+            isValid = false;
+            newErrors.Password = 'Password must be at least 6 characters long';
+        }
+        setErrors(newErrors);
+        return isValid;
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log({name,value});
+        console.log({ name, value });
         setCredentials((prevState) => ({
-          ...prevState,
-          [name]: value,
+            ...prevState,
+            [name]: value,
         }));
-      };
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const tokenData  = await loginUser(credentials);
-            localStorage.setItem('jwt_token', tokenData);
-            alert("Login successful");
-        }catch(error){
-            alert("Login failed");
+        if (validate()) {
+            try {
+                const tokenData = await loginUser(credentials);
+                localStorage.setItem('jwt_token', tokenData);
+                alert("Login successful");
+            } catch (error) {
+                alert("Login failed");
+            }
         }
     }
 
-    
+
     const [isPasswordVisibile, setIsPasswordVisible] = useState(false);
 
     const handleIsPasswordVisible = (event) => {
@@ -48,14 +73,17 @@ const LoginPage = () => {
                 <FormGroup>
                     <InputGroup>
                         <InputGroupText>
-                            <FaEnvelope/>
+                            <FaEnvelope />
                         </InputGroupText>
-                        <Input placeholder="email" type="email" name="Email" onChange={handleChange} value={credentials.Email}/>
+                        <Input placeholder="email" type="email" name="Email" onChange={handleChange} value={credentials.Email} />
                     </InputGroup>
+                    <span className="error-class">
+                        {errors.Email}
+                    </span>
                     <br />
                     <InputGroup style={{ display: "flex", justifyContent: "space-between" }}>
                         <InputGroupText>
-                            <FaLock/>
+                            <FaLock />
                         </InputGroupText>
                         <Input placeholder="password" name="Password" onChange={handleChange} type={isPasswordVisibile ? "text" : "password"} value={credentials.Password} />
                         <InputGroupText>
@@ -71,6 +99,9 @@ const LoginPage = () => {
                             </Button>
                         </InputGroupText>
                     </InputGroup>
+                    <span className="error-class">
+                        {errors.Password}
+                    </span>
                 </FormGroup>
                 <Button type="submit">Submit</Button>
             </Form>

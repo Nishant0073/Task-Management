@@ -13,6 +13,42 @@ const EditTaskPage = () => {
         taskPriority: ''
     });
 
+    const [errors, setErrors] = useState({
+        title: '',
+        description: '',
+        dueDate: '',
+        taskStatus: true,
+        taskPriority: ''
+    });
+
+    const isValid = () => {
+        let isValid = true;
+        let newErrors = {};
+
+        if (!taskData.title) {
+            isValid = false;
+            newErrors.title = 'Title is Required';
+        }
+
+        if (!taskData.description) {
+            isValid = false;
+            newErrors.description = 'Description is Required';
+        }
+
+        if (!taskData.dueDate) {
+            isValid = false;
+            newErrors.description = 'Due Date is Required';
+        }
+
+       
+        if (!taskData.taskPriority) {
+            isValid = false;
+            newErrors.taskPriority = 'Task Priority is Required';
+        }
+        setErrors(newErrors);
+        return isValid;
+    }
+
     const navigate = useNavigate();
 
     // Initialize task data if task is passed
@@ -45,9 +81,10 @@ const EditTaskPage = () => {
 
     const handleUpdateTask = (event) => {
         event.preventDefault();
-        console.log('Updated Task Data:', taskData);
-
-        navigate('/');
+        if (isValid()) {
+            console.log('Updated Task Data:', taskData);
+            navigate('/');
+        }
     }
 
     return (
@@ -64,6 +101,7 @@ const EditTaskPage = () => {
                         onChange={handleChange}
                         value={taskData.title}
                     />
+                    <span className='error-class'>{errors.title}</span>
                 </FormGroup>
 
                 <FormGroup>
@@ -76,6 +114,7 @@ const EditTaskPage = () => {
                         onChange={handleChange}
                         value={taskData.description}
                     />
+                    <span className='error-class'>{errors.description}</span>
                 </FormGroup>
 
                 <FormGroup>
@@ -88,6 +127,7 @@ const EditTaskPage = () => {
                         onChange={handleChange}
                         value={taskData.dueDate}
                     />
+                    <span className='error-class'>{errors.dueDate}</span>
                 </FormGroup>
 
                 <FormGroup>
@@ -100,6 +140,7 @@ const EditTaskPage = () => {
                         />
                         <Label check>{taskData.taskStatus ? "Task Completed" : "Task Pending"}</Label>
                     </FormGroup>
+                    <span className='error-class'>{errors.taskStatus}</span>
                 </FormGroup>
 
                 <FormGroup>
@@ -116,6 +157,7 @@ const EditTaskPage = () => {
                         <option value="Medium">Medium</option>
                         <option value="Low">Low</option>
                     </Input>
+                    <span className='error-class'>{errors.taskPriority}</span>
                 </FormGroup>
 
                 <div style={{ textAlign: 'center' }}>
