@@ -1,7 +1,5 @@
 import React, { useState , useEffect} from "react";
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from "reactstrap";
-import * as Data from '../sampleData'
-import EditTaskPage from "./EditTaskPage";
 import { useNavigate } from "react-router-dom";
 import { GetTasks } from "../services/taskService";
 import { useToast } from "../Helper/ToastProvider.jsx";
