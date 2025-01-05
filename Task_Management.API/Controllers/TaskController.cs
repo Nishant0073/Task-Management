@@ -78,7 +78,7 @@ public class TaskController: ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<TaskResponseDto>> UpdateTask([FromQuery] TaskPutDto task)
+    public async Task<ActionResult<TaskResponseDto>> UpdateTask([FromBody] TaskPutDto task)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
