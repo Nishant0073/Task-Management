@@ -18,7 +18,6 @@ export const registerUser = async (userData) => {
 export const loginUser = async (loginData) => {
     try{
         const response = await axios.post(`${API_URL}/token`,loginData);
-        console.log(response.data);
         return response.data;
     }
     catch{
