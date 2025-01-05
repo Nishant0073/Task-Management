@@ -79,13 +79,16 @@ const AddTaskPage = () => {
                     notify("Task Added!");
                     navigate('/');
                 }
-                else {
+                else if(response.status==401){
+                    navigate("/login");
+                }else {
                     console.log(response.status);
                     notify("Failed to add task!");
                 }
             } catch (error) {
                 console.log(error);
                 notify("Failed to add task!");
+                navigate("/login")
             }
         }
     }

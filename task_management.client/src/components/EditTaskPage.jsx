@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
-import { UpdateTask } from '../services/taskService';
+import { useLocation, useNavigate, } from 'react-router-dom';
+import { Form, FormGroup, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { UpdateTask, DeleteTask } from '../services/taskService';
 import { useToast } from "../Helper/ToastProvider.jsx";
 
 const EditTaskPage = () => {
@@ -51,6 +51,7 @@ const EditTaskPage = () => {
         setErrors(newErrors);
         return isValid;
     }
+    const [deleteTask, setDeleteTask] = useState(false);
 
     const navigate = useNavigate();
 
@@ -98,8 +99,33 @@ const EditTaskPage = () => {
             } catch (error) {
                 console.log(error);
                 notify("Failed to update task!");
+                navigate("/login")
             }
         }
+    }
+    const handleDelete = async () => {
+        try {
+            var response = await DeleteTask(taskData.id);
+            if (response.status == 200) {
+                notify(`${task.title} Task Deleted!`);
+                navigate("/");
+            }
+            else if(response.status==401){
+                navigate("/login");
+            }
+            else {
+                notify("Failed to delete task!");
+            }
+            setDeleteTask(false);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const handlConfirmDelete = () => {
+        setDeleteTask(true);
+    }
+    const handleCancel = () => {
+        setDeleteTask(false);
     }
 
     return (
@@ -176,14 +202,40 @@ const EditTaskPage = () => {
                 </FormGroup>
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
                     <div style={{ flex: 1, textAlign: 'center' }}>
-                        <Button type="submit">Update Task</Button>
+                        <Button type="button" className="btn btn-danger" onClick={handlConfirmDelete}>Delete Task</Button>
                     </div>
                     <div style={{ flex: 1, textAlign: 'center' }}>
                         <Button type="submit">Update Task</Button>
                     </div>
                 </div>
 
+                <Modal isOpen={deleteTask} toggle={handlConfirmDelete}>
 
+                    <ModalHeader toggle={handlConfirmDelete}>Confirmation</ModalHeader>
+
+                    <ModalBody>
+
+                        Are you sure you want to proceed?
+
+                    </ModalBody>
+
+                    <ModalFooter>
+
+                        <Button color="primary" onClick={handleDelete}>
+
+                            Yes
+
+                        </Button>
+
+                        <Button color="secondary" onClick={handleCancel}>
+
+                            No
+
+                        </Button>
+
+                    </ModalFooter>
+
+                </Modal>
             </Form>
         </div>
     );

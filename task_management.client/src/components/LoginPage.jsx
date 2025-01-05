@@ -43,7 +43,6 @@ const LoginPage = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log({ name, value });
         setCredentials((prevState) => ({
             ...prevState,
             [name]: value,
