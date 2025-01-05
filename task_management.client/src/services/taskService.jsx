@@ -57,3 +57,19 @@ export const AddTask = async (task) => {
         return null;
     }
 }
+
+export const DeleteTask = async (id) => {
+    const TOKEN = localStorage.getItem('jwt_token');
+    try{
+        const response = await axios.delete(`${API_URL}/${id}`,{
+            headers: {
+                Authorization: `Bearer ${TOKEN}`
+            }
+        })
+        return response;
+    }
+    catch(error){
+        console.log("Failed to delete task!", error)
+        return null;
+    }
+}
