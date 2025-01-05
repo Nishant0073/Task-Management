@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { UpdateTask } from '../services/taskService';
+import { useToast } from "../Helper/ToastProvider.jsx";
 
 const EditTaskPage = () => {
     const location = useLocation();
     const { task } = location.state || {};
+    const notify = useToast();
     const [taskData, setTaskData] = useState({
         title: '',
         description: '',
@@ -40,7 +43,7 @@ const EditTaskPage = () => {
             newErrors.description = 'Due Date is Required';
         }
 
-       
+
         if (!taskData.taskPriority) {
             isValid = false;
             newErrors.taskPriority = 'Task Priority is Required';
@@ -55,10 +58,11 @@ const EditTaskPage = () => {
     useEffect(() => {
         if (task) {
             setTaskData({
+                id: task.id || -1,
                 title: task.title || '',
                 description: task.description || '',
                 dueDate: task.dueDate ? task.dueDate.split('T')[0] : '',
-                taskStatus: task.status || true,
+                taskStatus: task.isComplete || false,
                 taskPriority: task.priority || ''
             });
         }
@@ -79,11 +83,22 @@ const EditTaskPage = () => {
         }));
     }
 
-    const handleUpdateTask = (event) => {
+    const handleUpdateTask = async (event) => {
         event.preventDefault();
         if (isValid()) {
-            console.log('Updated Task Data:', taskData);
-            navigate('/');
+            try {
+                var response = await UpdateTask(taskData);
+                if (response.status == 200) {
+                    notify("Task Updated!");
+                    navigate('/');
+                }
+                else {
+                    notify("Failed to update task!");
+                }
+            } catch (error) {
+                console.log(error);
+                notify("Failed to update task!");
+            }
         }
     }
 
@@ -153,7 +168,7 @@ const EditTaskPage = () => {
                         value={taskData.taskPriority}
                     >
                         <option value="">Select Priority</option>
-                        <option value="Hight">High</option>
+                        <option value="High">High</option>
                         <option value="Medium">Medium</option>
                         <option value="Low">Low</option>
                     </Input>
