@@ -57,7 +57,7 @@ public class TaskController: ControllerBase
     /// <param name="task"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<Task>> PostTask([FromQuery]TaskPostDto task)
+    public async Task<ActionResult<Task>> PostTask([FromBody]TaskPostDto task)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
