@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState , useEffect} from "react";
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from "reactstrap";
 import * as Data from '../sampleData'
 import EditTaskPage from "./EditTaskPage";
 import { useNavigate } from "react-router-dom";
+import { GetTasks } from "../services/taskService";
+import { useToast } from "../Helper/ToastProvider.jsx";
+import { useAuth } from "../Helper/AuthProvider.jsx";
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const [taskList,setTaskList] = useState([]);
+  const { logout } = useAuth();
+    const notify = useToast();
 
     const handleEditTask = (task) => {
-        //const task = { id: 1, title: 'Sample Task', description: 'Task Description' }; 
         navigate('/edittask',{state: {task}})
     }
 
@@ -16,13 +21,35 @@ const HomePage = () => {
     const taskStyle = (task) => {
         return (Date(task.dueDate) < Date.now && !task.isComplete) ? { color: "red" } : task.isComplete ? { color: "green" } : { color: "" };
     }
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const result = await GetTasks();
+                if (result.status !== 200) { // Check for HTTP status code
+                    notify("Failed to fetch tasks");
+                }
+                else if(result.status === 401){
+                   await logout();
+                    navigate("/login");
+                }
+                 else {
+                    setTaskList(result.data);
+                }
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+                notify("An error occurred while fetching tasks");
+            }
+        };
+
+        fetchTasks(); // Call the async function
+    }, []); 
 
     return (
         <div className="responsive-home-div">
             <h1 style={{ textAlign: "center", padding: "30px" }}>Tasks List</h1>
             <ListGroup flush>
                 {
-                    Data.taskList.map(task => {
+                    taskList.map(task => {
                         return <ListGroupItem key={task.id}
                             tag="a"
                             onClick={(e) => {
