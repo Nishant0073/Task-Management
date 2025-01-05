@@ -31,7 +31,7 @@ const HomePage = () => {
                     navigate("/login");
                 }
                  else {
-                    setTaskList(result.data);
+                    setTaskList(result.data.reverse());
                 }
             } catch (error) {
                 console.error("Error fetching tasks:", error);

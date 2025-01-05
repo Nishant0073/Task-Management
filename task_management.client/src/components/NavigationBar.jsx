@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import {
   Navbar,
   NavbarBrand,
@@ -10,11 +10,14 @@ import {
 } from 'reactstrap';
 import { useAuth } from '../Helper/AuthProvider';
 import * as Constants from '../constants';
+import LoginPage from './LoginPage';
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, logout } = useAuth();
   const toggleNavbar = () => setIsOpen(!isOpen);
+  const navigate = useNavigate();
 
   return (
     <Navbar color="dark" dark expand="md">
@@ -28,6 +31,9 @@ const NavigationBar = () => {
                 <NavLink href="/">Home</NavLink>
               </NavItem>
 
+              <NavItem>
+                <NavLink href="/addtask">Add Task</NavLink>
+              </NavItem>
             </>) : (
             <>
               <NavItem>
@@ -45,7 +51,7 @@ const NavigationBar = () => {
         <Nav navbar>
           {isAuthenticated ? (
             <NavItem>
-              <NavLink onClick={(e) => { logout() }}>Logout</NavLink>
+              <NavLink onClick={(e) => { logout();navigate('/login')} }>Logout</NavLink>
             </NavItem>) : <></>
           }
         </Nav>

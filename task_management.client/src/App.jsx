@@ -8,43 +8,52 @@ import RegistrationPage from './components/RegistrationPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ProtectedRoute, PublicRoute } from './Helper/RouteGuards';
 import NotFoundPage from './components/NotFoundPage'
-
+import AddTaskPagen from './components/AddTaskPage';
 import NavigationBar from './components/NavigationBar';
+import AddTaskPage from './components/AddTaskPage';
 
 function App() {
   return (
     <Router>
-          <NavigationBar />
-  <Routes>
-    {/* Protected Routes */}
-    <Route 
-      path="/" 
-      element={
-        <ProtectedRoute>
-          <HomePage />
-        </ProtectedRoute>
-      } 
-    />
-    <Route 
-      path="/edittask" 
-      element={
-        <ProtectedRoute>
-          <EditTaskPage />
-        </ProtectedRoute>
-      } 
-    />
+      <NavigationBar />
+      <Routes>
+        {/* Protected Routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edittask"
+          element={
+            <ProtectedRoute>
+              <EditTaskPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/addtask"
+          element={
+            <ProtectedRoute>
+              <AddTaskPage/>
+            </ProtectedRoute>
+          }
+        />
 
-    {/* Public Routes */}
-    <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-    <Route path="/registration" element={<PublicRoute><RegistrationPage /></PublicRoute>} />
+        {/* Public Routes */}
+        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+        <Route path="/registration" element={<PublicRoute><RegistrationPage /></PublicRoute>} />
 
-    {/* Unrestricted Routes */}
-    <Route path="/about" element={<AboutPage />} />
+        {/* Unrestricted Routes */}
+        <Route path="/about" element={<AboutPage />} />
 
-    {/* Fallback Route */}
-    <Route path="*" element={<NotFoundPage />} />
-  </Routes>
-</Router>
+        {/* Fallback Route */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
 
   );
 }

@@ -39,3 +39,21 @@ export const UpdateTask = async (task) => {
         console.log("Failed to update task!", error);
     }
 }
+
+
+export const AddTask = async (task) => {
+    const TOKEN = localStorage.getItem('jwt_token');
+
+    try{
+        const response = await axios.post(`${API_URL}`,task,{
+            headers: {
+                Authorization: `Bearer ${TOKEN}`
+            }
+        })
+        return response;
+    }
+    catch(error){
+        console.log("Failed to add task!", error)
+        return null;
+    }
+}

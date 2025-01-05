@@ -174,10 +174,16 @@ const EditTaskPage = () => {
                     </Input>
                     <span className='error-class'>{errors.taskPriority}</span>
                 </FormGroup>
-
-                <div style={{ textAlign: 'center' }}>
-                    <Button type="submit">Update Task</Button>
+                <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
+                    <div style={{ flex: 1, textAlign: 'center' }}>
+                        <Button type="submit">Update Task</Button>
+                    </div>
+                    <div style={{ flex: 1, textAlign: 'center' }}>
+                        <Button type="submit">Update Task</Button>
+                    </div>
                 </div>
+
+
             </Form>
         </div>
     );

@@ -55,9 +55,10 @@ const LoginPage = () => {
         if (validate()) {
             try {
                 const tokenData = await loginUser(credentials);
-                localStorage.setItem('jwt_token', tokenData);
+                console.log(tokenData.token)
+                await localStorage.setItem('jwt_token', tokenData.token);
                 if (tokenData.isAuthenticated==true) {
-                    login(tokenData.token);
+                    await login(tokenData.token)
                     navigate('/');
                 }
                 else {
