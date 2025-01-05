@@ -9,11 +9,11 @@ import {
   NavLink,
 } from 'reactstrap';
 import { useAuth } from '../Helper/AuthProvider';
-import  * as Constants from '../constants';
+import * as Constants from '../constants';
 
 const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const {logout} = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const toggleNavbar = () => setIsOpen(!isOpen);
 
   return (
@@ -22,23 +22,32 @@ const NavigationBar = () => {
       <NavbarToggler onClick={toggleNavbar} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="me-auto" navbar>
-          <NavItem>
-            <NavLink href="/">Home</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="/login">Login</NavLink>
-          </NavItem>
+          {isAuthenticated ? (
+            <>
+              <NavItem>
+                <NavLink href="/">Home</NavLink>
+              </NavItem>
+
+            </>) : (
+            <>
+              <NavItem>
+                <NavLink href="/login">Login</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/registration">Register</NavLink>
+              </NavItem>
+            </>)
+          }
           <NavItem>
             <NavLink href="/about">About</NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink href="/registration">Register</NavLink>
-          </NavItem>
         </Nav>
         <Nav navbar>
-        <NavItem>
-            <NavLink onClick={(e) => {logout()}}>Logout</NavLink>
-          </NavItem>
+          {isAuthenticated ? (
+            <NavItem>
+              <NavLink onClick={(e) => { logout() }}>Logout</NavLink>
+            </NavItem>) : <></>
+          }
         </Nav>
       </Collapse>
     </Navbar>
